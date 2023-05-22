@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MyPass2.0</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Maven+Pro&display=swap');
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 98vh;
+            font-family: 'Maven Pro', sans-serif;
+            background-color: rgba(46, 52, 64);
+            color: white;
+        }
+
+        #container {
+            text-align: center;
+            width: 390px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+    </style>
+    <script>
+        function generatePassword() {
+            const length = document.getElementById("lengthSlider").value;
+            const includeUppercase = document.getElementById("includeUppercase").checked;
+            const includeLowercase = document.getElementById("includeLowercase").checked;
+            const includeNumbers = document.getElementById("includeNumbers").checked;
+            const includeSymbols = document.getElementById("includeSymbols").checked;
+
+            const uppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const lowercaseLetters = "abcdefghijklmnopqrstuvwxyz";
+            const numbers = "0123456789";
+            const symbols = "!@#$%^&*()_+=-{}[]<>?";
+
+            let validChars = "";
+            let password = "";
+
+            if (includeUppercase) {
+                validChars += uppercaseLetters;
+            }
+            if (includeLowercase) {
+                validChars += lowercaseLetters;
+            }
+            if (includeNumbers) {
+                validChars += numbers;
+            }
+            if (includeSymbols) {
+                validChars += symbols;
+            }
+
+            if (includeSymbols && !includeUppercase && !includeLowercase && !includeNumbers) {
+                alert("The password can't contain only symbols");
+                return;
+            }
+
+            if (!includeSymbols && !includeUppercase && !includeLowercase && !includeNumbers) {
+                alert("Select at least one box");
+                return;
+            }
+
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * validChars.length);
+                password += validChars.charAt(randomIndex);
+            }
+
+            document.getElementById("password").value = password;
+        }
+
+        function updateSliderValue() {
+            const sliderValue = document.getElementById("lengthSlider").value;
+            document.getElementById("sliderValue").textContent = sliderValue;
+        }
+
+        function copyPassword() {
+            const password = document.getElementById("password").textContent;
+            navigator.clipboard.writeText(password)
+            .then(() => {
+                alert("Password copiata negli appunti!");
+            })
+            .catch((error) => {
+                console.error("Errore durante la copia della password:", error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div id="container">
+        <h1>MyPass2.0</h1>
+        <div>
+            Length: <span id="sliderValue">8</span>
+            <input type="range" id="lengthSlider" min="8" max="20" value="8" oninput="updateSliderValue()">
+        </div>
+        <br>
+        <div>
+            <label><input type="checkbox" id="includeUppercase">Uppercase</label><br>
+            <label><input type="checkbox" id="includeLowercase">Lowercase</label><br>
+            <label><input type="checkbox" id="includeNumbers">Numbers</label><br>
+            <label><input type="checkbox" id="includeSymbols">Symbols</label>
+        </div>
+        <br>
+        <button style="border: 1px solid #ccc; border-radius: 5px; font-size: 17px; color: rgba(46, 52, 64); background-color: white;" onclick="generatePassword()">Generate Password</button>
+        <br>
+        <br>
+        <input style="font-size: 20px; border-radius: 7px;" type="text" id="password" readonly>
+        <button style="background-color: transparent; border-color: transparent;" id="copyBtn" data-clipboard-action="copy" data-clipboard-target="#password">
+            <img src="copy-icon.png" alt="Copia">
+    </div>
+</body>
+</html>
