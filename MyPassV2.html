@@ -30,6 +30,7 @@
             const includeNumbers = document.getElementById("includeNumbers").checked;
             const includeSymbols = document.getElementById("includeSymbols").checked;
 
+            //AVAILABLE CHARACTERS
             const uppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             const lowercaseLetters = "abcdefghijklmnopqrstuvwxyz";
             const numbers = "0123456789";
@@ -38,6 +39,7 @@
             let validChars = "";
             let password = "";
 
+            //PASSWORD GENERATION
             if (includeUppercase) {
                 validChars += uppercaseLetters;
             }
@@ -51,6 +53,7 @@
                 validChars += symbols;
             }
 
+            //EXCEPTIONS
             if (includeSymbols && !includeUppercase && !includeLowercase && !includeNumbers) {
                 alert("The password can't contain only symbols");
                 return;
@@ -69,21 +72,12 @@
             document.getElementById("password").value = password;
         }
 
+        //LENGTH SELECTION
         function updateSliderValue() {
             const sliderValue = document.getElementById("lengthSlider").value;
             document.getElementById("sliderValue").textContent = sliderValue;
         }
 
-        function copyPassword() {
-            const password = document.getElementById("password").textContent;
-            navigator.clipboard.writeText(password)
-            .then(() => {
-                alert("Password copiata negli appunti!");
-            })
-            .catch((error) => {
-                console.error("Errore durante la copia della password:", error);
-            });
-        }
     </script>
 </head>
 <body>
@@ -105,8 +99,6 @@
         <br>
         <br>
         <input style="font-size: 20px; border-radius: 7px;" type="text" id="password" readonly>
-        <button style="background-color: transparent; border-color: transparent;" id="copyBtn" data-clipboard-action="copy" data-clipboard-target="#password">
-            <img src="copy-icon.png" alt="Copia">
     </div>
 </body>
 </html>
